@@ -17,5 +17,31 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+  Order.associate = db => {
+    Order.belongsTo(db.User, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
+
+    Order.belongsTo(db.Room, {
+      foreignKey: {
+        name: "roomId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
+
+    Order.hasMany(db.OrderStatus, {
+      foreignKey: {
+        name: "orderId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
+  };
+
   return Order;
 };

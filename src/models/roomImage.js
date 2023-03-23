@@ -13,5 +13,15 @@ module.exports = (sequelize, DataTypes) => {
     { underscord: true }
   );
 
+  RoomImage.associate = db => {
+    RoomImage.hasMany(db.Room, {
+      foreignKey: {
+        name: "roomImageId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
+  };
+
   return RoomImage;
 };

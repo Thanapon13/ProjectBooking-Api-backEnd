@@ -7,5 +7,15 @@ module.exports = (sequelize, DataTypes) => {
     { underscord: true }
   );
 
+  Category.associate = db => {
+    Category.hasMany(db.Room, {
+      foreignKey: {
+        name: "categoryId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
+  };
+
   return Category;
 };

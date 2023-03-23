@@ -22,5 +22,14 @@ module.exports = (sequelize, DataTypes) => {
     { underscored: true }
   );
 
+  OrderStatus.associate = db => {
+    OrderStatus.belongsTo(db.Order, {
+      foreignKey: {
+        name: "orderId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
+  };
   return OrderStatus;
 };

@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true
     }
   );
+
   User.associate = db => {
     User.hasMany(db.Post, {
       foreignKey: {
@@ -54,11 +55,37 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT"
     });
+
     User.hasMany(db.Comment, {
       foreignKey: {
         name: "userId",
         allowNull: false
-      }
+      },
+      onDelete: "RESTRICT"
+    });
+
+    User.hasMany(db.Order, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
+
+    User.hasMany(db.Cart, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
+
+    User.hasMany(db.Reservation, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
     });
   };
 
