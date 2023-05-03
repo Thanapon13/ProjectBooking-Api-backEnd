@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
+      address: DataTypes.STRING,
       omiseId: DataTypes.STRING,
       linenotify: DataTypes.STRING
     },
