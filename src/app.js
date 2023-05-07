@@ -13,6 +13,8 @@ const notFoundMiddleware = require("./middlewares/not-found");
 const errorMiddleware = require("./middlewares/error");
 
 const authRoute = require("./routes/auth-route");
+const userRoute = require("./routes/user-route");
+const authenticateMiddleware = require("./middlewares/authenticate");
 
 const app = express();
 
@@ -26,9 +28,10 @@ app.use(
 );
 app.use(helmet());
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); //ทำการ  passing body ในรูปแบบที่ request body ส่งมาใน format ที่เรียกว่า appication/json คือข้อมูที่ส่งผ่าน axios
 
 app.use("/auth", authRoute);
+app.use("/user", authenticateMiddleware, userRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
