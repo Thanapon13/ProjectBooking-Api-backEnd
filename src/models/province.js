@@ -2,7 +2,8 @@ module.exports = (sequelize, DataTypes) => {
   const Province = sequelize.define(
     "Province",
     {
-      title: { type: DataTypes.STRING, allowNull: false }
+      title: { type: DataTypes.STRING, allowNull: false },
+      ProvinceLogoImage: DataTypes.STRING
     },
     { underscord: true }
   );

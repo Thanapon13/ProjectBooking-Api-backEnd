@@ -14,6 +14,7 @@ const errorMiddleware = require("./middlewares/error");
 
 const authRoute = require("./routes/auth-route");
 const userRoute = require("./routes/user-route");
+const provinceRoute = require("./routes/province-Route");
 const authenticateMiddleware = require("./middlewares/authenticate");
 
 const app = express();
@@ -32,8 +33,9 @@ app.use(express.json()); //ทำการ  passing body ในรูปแบ�
 
 app.use("/auth", authRoute);
 app.use("/user", authenticateMiddleware, userRoute);
+app.use("/province", provinceRoute);
 
-app.use(notFoundMiddleware); 
+app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
 const port = process.env.PORT || 3000;
