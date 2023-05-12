@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       price: DataTypes.DECIMAL(10, 2),
       address: { type: DataTypes.STRING, allowNull: false },
       description: { type: DataTypes.STRING, allowNull: false },
+      roomImage: DataTypes.STRING,
       type: DataTypes.ENUM("RESERVE", "SELLER")
     },
 
@@ -29,17 +30,17 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "RESTRICT"
     });
 
-    Room.belongsTo(db.Province, {
+    Room.hasMany(db.Cart, {
       foreignKey: {
-        name: "provinceId",
+        name: "roomId",
         allowNull: false
       },
       onDelete: "RESTRICT"
     });
 
-    Room.belongsTo(db.RoomImage, {
+    Room.belongsTo(db.Province, {
       foreignKey: {
-        name: "roomImageId",
+        name: "provinceId",
         allowNull: false
       },
       onDelete: "RESTRICT"
@@ -53,9 +54,9 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "RESTRICT"
     });
 
-    Room.hasMany(db.Cart, {
+    Room.belongsTo(db.User, {
       foreignKey: {
-        name: "roomId",
+        name: "userId",
         allowNull: false
       },
       onDelete: "RESTRICT"

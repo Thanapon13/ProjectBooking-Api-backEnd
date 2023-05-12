@@ -16,8 +16,8 @@ exports.updateProfileImage = async (req, res, next) => {
     }
 
     if (req.files.profileImage) {
-      // console.log(req.files, "req.files");
-      const profileImage = await cloudinary.upload(
+      console.log(req.files, "req.files userrr");
+      const profileImage = await cloudinary.uploadProfile(
         req.files.profileImage[0].path,
         profilePublicId
       );

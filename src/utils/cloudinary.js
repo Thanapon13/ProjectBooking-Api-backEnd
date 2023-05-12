@@ -1,6 +1,6 @@
 const cloudinary = require("../config/cloudinary");
 
-exports.upload = async (filePath, publicId) => {
+exports.uploadProfile = async (filePath, publicId) => {
   const option = {
     unique_filename: false,
     use_filename: true,
@@ -20,4 +20,20 @@ exports.upload = async (filePath, publicId) => {
 exports.getPublicId = url => {
   const splitSlash = url.split("/");
   return splitSlash[splitSlash.length - 1].split(".")[0];
+};
+
+exports.uploadRoomImage = async (filePath, publicId) => {
+  const option = {
+    unique_filename: false,
+    use_filename: false,
+    overwrite: true,
+    folder: "/project02/roomImage"
+  };
+
+  if (publicId) {
+    option.public_id = publicId;
+  }
+
+  const result = await cloudinary.uploader.upload(filePath, option);
+  return result.secure_url;
 };
