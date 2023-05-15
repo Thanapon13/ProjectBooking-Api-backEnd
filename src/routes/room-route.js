@@ -1,20 +1,22 @@
 const express = require("express");
 const upload = require("../middlewares/upload");
-const authenticate = require("../middlewares/authenticate");
+const authenticateMiddleware = require("../middlewares/authenticate");
 const roomController = require("../controllers/room-controller");
 
 const router = express.Router();
 
-router.post(
+router.patch(
   "/",
+  authenticateMiddleware,
   upload.fields([
     {
       name: "roomImage",
-      maxCount: 10
+      maxCount: 7
     }
   ]),
-  authenticate,
   roomController.createRoom
 );
+
+router.get("/getRoomProduct", roomController.getRoomProduct);
 
 module.exports = router;

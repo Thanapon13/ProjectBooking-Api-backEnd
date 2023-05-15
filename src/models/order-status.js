@@ -30,6 +30,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT"
     });
+
+    OrderStatus.belongsTo(db.User, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
   };
   return OrderStatus;
 };
