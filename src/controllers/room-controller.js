@@ -5,55 +5,48 @@ const { Room } = require("../models");
 
 exports.createRoom = async (req, res, next) => {
   try {
-    let value;
-    if (!req.files) {
-      createError("room image is required");
+    if (
+      !req.files ||
+      !req.files.roomImage ||
+      req.files.roomImage.length === 0
+    ) {
+      return res.status(400).json({ message: "Room image is required" });
     }
 
-    console.log(req.files, "req.files----------");
+    const roomImages = [];
 
-    // if (req.files.length > 0) {
-    //   for (const file = 0; file < req.files.length; file++) {
-    //     // Upload file to Cloudinary
-    //     const roomImage = await cloudinary.uploadRoomImage(file.path);
-    //     console.log("Uploaded file:", roomImage);
-    //   }
-    // }
-    // value = { roomImage };
-    // console.log(value, "valueRoomImage");
-
-    const roomImage = await cloudinary.uploadRoomImage(
-      req.files.roomImage[0].path
-      // req.files.path
-    );
-
-    console.log("req.files---------------------------", req.files);
-    console.log("-----------------------------------");
-
-    value = { roomImage };
-    // console.log(value, "value");
-
-    value.title = req.body.title;
-    value.price = Number(req.body.price);
-    value.address = req.body.address;
-    value.description = req.body.description;
-    value.categoryId = Number(req.body.categoryId);
-    value.provinceId = Number(req.body.provinceId);
-    value.userId = Number(req.body.userId);
-
-    // console.log(value, "value");
+    for (let i = 0; i < req.files.roomImage.length; i++) {
+      const roomImage = await cloudinary.uploadRoomImage(
+        req.files.roomImage[i].path,
+        console.log(
+          "  req.files.roomImage[i].path",
+          req.files.roomImage[i].path
+        )
+      );
+      console.log("roomImage:", roomImage);
+      roomImages.push(roomImage);
+      console.log("Uploaded roomImage:", roomImage);
+      fs.unlinkSync(req.files.roomImage[i].path);
+    }
+    const value = {
+      roomImage: JSON.stringify(roomImages), // เปลี่ยนจาก roomImages เป็น roomImage
+      title: req.body.title,
+      price: Number(req.body.price),
+      address: req.body.address,
+      description: req.body.description,
+      categoryId: Number(req.body.categoryId),
+      provinceId: Number(req.body.provinceId),
+      userId: Number(req.body.userId)
+    };
+    console.log("Value:", value);
 
     await Room.create(value);
 
-    // console.log(room, "room");
+    console.log("Room:", Room);
 
-    res.status(200).json({ message: "success update" });
+    return res.status(200).json({ message: "Successfully updated" });
   } catch (err) {
     next(err);
-  } finally {
-    if (req.files) {
-      fs.unlinkSync(req.files.roomImage[0].path);
-    }
   }
 };
 

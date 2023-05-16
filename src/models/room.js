@@ -6,10 +6,12 @@ module.exports = (sequelize, DataTypes) => {
       price: DataTypes.DECIMAL(10, 2),
       address: { type: DataTypes.STRING, allowNull: false },
       description: { type: DataTypes.STRING, allowNull: false },
-      roomImage: DataTypes.STRING
+      roomImage: {
+        type: DataTypes.STRING,
+        allowNull: false
+      }
     },
-
-    { underscord: true }
+    { underscored: true }
   );
 
   Room.associate = db => {
