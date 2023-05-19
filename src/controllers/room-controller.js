@@ -1,7 +1,7 @@
 const fs = require("fs");
 const cloudinary = require("../utils/cloudinary");
 const createError = require("../utils/create-error");
-const { Room } = require("../models");
+const { Room, Category } = require("../models");
 
 exports.createRoom = async (req, res, next) => {
   try {
@@ -17,21 +17,18 @@ exports.createRoom = async (req, res, next) => {
 
     for (let i = 0; i < req.files.roomImage.length; i++) {
       const roomImage = await cloudinary.uploadRoomImage(
-        req.files.roomImage[i].path,
-        console.log(
-          "  req.files.roomImage[i].path",
-          req.files.roomImage[i].path
-        )
+        req.files.roomImage[i].path
       );
-      console.log("roomImage:", roomImage);
+      // console.log("roomImage:", roomImage);
       roomImages.push(roomImage);
-      console.log("Uploaded roomImage:", roomImage);
+      // console.log("Uploaded roomImage:", roomImage);
       fs.unlinkSync(req.files.roomImage[i].path);
     }
+
     const value = {
       roomImage: JSON.stringify(roomImages), // เปลี่ยนจาก roomImages เป็น roomImage
       title: req.body.title,
-      price: Number(req.body.price),
+      price: parseFloat(req.body.price.replace(",", "")),
       address: req.body.address,
       description: req.body.description,
       categoryId: Number(req.body.categoryId),
@@ -60,7 +57,8 @@ exports.getRoomProduct = async (req, res, next) => {
         "address",
         "description",
         "roomImage"
-      ]
+      ],
+      include: [{ model: Category, attributes: ["typeProduct"] }]
     });
     // console.log(rooms, "room---------------------------");
 

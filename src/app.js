@@ -16,6 +16,7 @@ const authRoute = require("./routes/auth-route");
 const userRoute = require("./routes/user-route");
 const provinceRoute = require("./routes/province-Route");
 const roomRoute = require("./routes/room-route");
+const cartsRoute = require("./routes/carts-route");
 const authenticateMiddleware = require("./middlewares/authenticate");
 
 const app = express();
@@ -36,6 +37,7 @@ app.use("/auth", authRoute);
 app.use("/user", authenticateMiddleware, userRoute);
 app.use("/province", provinceRoute);
 app.use("/room", roomRoute);
+app.use("/carts", authenticateMiddleware, cartsRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

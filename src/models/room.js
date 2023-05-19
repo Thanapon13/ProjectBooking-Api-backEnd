@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       address: { type: DataTypes.STRING, allowNull: false },
       description: { type: DataTypes.STRING, allowNull: false },
       roomImage: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
       }
     },
