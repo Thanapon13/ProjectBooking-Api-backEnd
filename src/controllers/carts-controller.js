@@ -1,4 +1,4 @@
-const { Cart, Room } = require("../models");
+const { Cart, Room, Category } = require("../models");
 const createError = require("../utils/create-error");
 
 exports.addCart = async (req, res, next) => {
@@ -34,7 +34,12 @@ exports.getCart = async (req, res, next) => {
       where: {
         userId: req.user.id
       },
-      include: { model: Room }
+      include: [
+        {
+          model: Room,
+          include: [{ model: Category, attributes: ["typeProduct"] }]
+        }
+      ]
     });
     res.status(200).json({ getCart });
   } catch (err) {
