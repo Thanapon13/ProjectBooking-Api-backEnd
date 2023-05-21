@@ -41,6 +41,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT"
     });
+
+    Order.hasOne(db.Payment, {
+      foreignKey: {
+        name: "orderId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
   };
 
   return Order;

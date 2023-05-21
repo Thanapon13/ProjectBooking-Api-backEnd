@@ -104,6 +104,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT"
     });
+
+    sequelize
+      .query("ALTER TABLE `users` MODIFY `email` VARCHAR(255) UNIQUE;")
+      .catch(console.error);
   };
 
   return User;
