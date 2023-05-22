@@ -18,14 +18,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
-        unique: true,
         validate: {
           isEmail: true
         }
       },
       mobile: {
         type: DataTypes.STRING,
-        unique: true,
         validate: {
           is: /^[0-9]{10}$/
         }
@@ -104,10 +102,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT"
     });
-
-    sequelize
-      .query("ALTER TABLE `users` MODIFY `email` VARCHAR(255) UNIQUE;")
-      .catch(console.error);
   };
 
   return User;

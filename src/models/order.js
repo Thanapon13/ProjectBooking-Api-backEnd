@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
 
         validate: {
-          notEmty: true
+          notEmpty: true
         },
         onDelete: "RESTRICT"
       }
