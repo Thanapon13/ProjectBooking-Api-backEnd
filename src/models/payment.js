@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       creditCardNumber: {
         type: DataTypes.STRING,
         allowNull: false,
-        validator: {
+        validate: {
           notEmpty: true
         },
         onDelete: "RESTRICT"
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       expirationDate: {
         type: DataTypes.STRING,
         allowNull: false,
-        validator: {
+        validate: {
           notEmpty: true
         },
         onDelete: "RESTRICT"
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       cvv: {
         type: DataTypes.STRING,
         allowNull: false,
-        validator: {
+        validate: {
           notEmpty: true
         },
         onDelete: "RESTRICT"
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       zipCode: {
         type: DataTypes.STRING,
         allowNull: false,
-        validator: {
+        validate: {
           notEmpty: true
         },
         onDelete: "RESTRICT"
@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       country: {
         type: DataTypes.STRING,
         allowNull: false,
-        validator: {
+        validate: {
           notEmpty: true
         },
         onDelete: "RESTRICT"

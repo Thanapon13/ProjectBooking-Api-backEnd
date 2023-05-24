@@ -15,6 +15,7 @@ exports.createOrder = async (req, res, next) => {
     // console.log(JSON.parse(JSON.stringify(cartData)), "cartData");
 
     const pureCartData = JSON.parse(JSON.stringify(cartData));
+    // console.log("pureCartData:", pureCartData);
 
     const createOrderData = {
       quantity: pureCartData.quantity,
@@ -25,7 +26,7 @@ exports.createOrder = async (req, res, next) => {
     // console.log("createOrderData:", createOrderData);
 
     const order = await Order.create(createOrderData);
-    console.log("order:", order);
+    // console.log("order:", order);
 
     await Cart.destroy({
       where: {
@@ -33,7 +34,7 @@ exports.createOrder = async (req, res, next) => {
       }
     });
 
-    res.status(200).json({ createOrderData });
+    res.status(200).json({ order });
   } catch (err) {
     next(err);
   }
