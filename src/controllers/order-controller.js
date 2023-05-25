@@ -1,4 +1,4 @@
-const { Order, Cart } = require("../models");
+const { Order, Cart, User, Room, Category } = require("../models");
 
 exports.createOrder = async (req, res, next) => {
   try {
@@ -37,5 +37,27 @@ exports.createOrder = async (req, res, next) => {
     res.status(200).json({ order });
   } catch (err) {
     next(err);
+  }
+};
+
+exports.getOrder = async (req, res, next) => {
+  try {
+    const order = await Order.findAll({
+      include: [
+        { model: User, attributes: ["firstName", "lastName"] },
+        {
+          model: Room,
+          attributes: ["title", "price", "roomImage"],
+          include: [{ model: Category, attributes: ["typeProduct"] }]
+        }
+      ]
+    });
+
+    const getOrder = JSON.parse(JSON.stringify(order));
+    // console.log("getOrder:", getOrder);
+
+    res.status(201).json({ getOrder });
+  } catch (err) {
+    console.log(err);
   }
 };

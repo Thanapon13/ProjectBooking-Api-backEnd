@@ -18,7 +18,19 @@ exports.createPayment = async (req, res, next) => {
     res.status(200).json({ message: "Successfully updated" });
   } catch (err) {
     next(err);
-    console.log("req.query:", req.query);
     console.log("req.body:", req.body);
+  }
+};
+
+exports.getPayment = async (req, res, next) => {
+  try {
+    const payment = await Payment.findAll({});
+
+    const getPayment = JSON.parse(JSON.stringify(payment));
+    console.log("getPayment:", getPayment);
+
+    res.status(201).json({ getPayment });
+  } catch (err) {
+    console.log(err);
   }
 };
