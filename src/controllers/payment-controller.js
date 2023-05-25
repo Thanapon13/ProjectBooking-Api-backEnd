@@ -34,3 +34,5 @@ exports.getPayment = async (req, res, next) => {
     console.log(err);
   }
 };
+
+console.log(sds);
