@@ -1,4 +1,4 @@
-const { Payment } = require("../models");
+const { Payment, OrderStatus } = require("../models");
 
 exports.createPayment = async (req, res, next) => {
   try {
@@ -14,25 +14,14 @@ exports.createPayment = async (req, res, next) => {
     console.log("Value:", value);
 
     await Payment.create(value);
-
+    await OrderStatus.create({
+      orderId: value.orderId,
+      status: "WAITING",
+      date: new Date()
+    });
     res.status(200).json({ message: "Successfully updated" });
   } catch (err) {
     next(err);
-    console.log("req.body:", req.body);
+    // console.log("req.body:", req.body);
   }
 };
-
-exports.getPayment = async (req, res, next) => {
-  try {
-    const payment = await Payment.findAll({});
-
-    const getPayment = JSON.parse(JSON.stringify(payment));
-    console.log("getPayment:", getPayment);
-
-    res.status(201).json({ getPayment });
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-console.log(sds);

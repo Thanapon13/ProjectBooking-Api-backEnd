@@ -13,5 +13,6 @@ router.patch(
 );
 
 router.patch("/info", userController.updateUserInfo);
+router.get("/userOrder", userController.userOrderHistorys);
 
 module.exports = router;

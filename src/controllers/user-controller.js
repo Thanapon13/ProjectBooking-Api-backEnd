@@ -1,7 +1,14 @@
 const fs = require("fs");
 const cloudinary = require("../utils/cloudinary");
 const createError = require("../utils/create-error");
-const { User } = require("../models");
+const {
+  User,
+  Order,
+  Room,
+  Payment,
+  OrderStatus,
+  Category
+} = require("../models");
 
 exports.updateProfileImage = async (req, res, next) => {
   try {
@@ -43,6 +50,50 @@ exports.updateUserInfo = async (req, res, next) => {
 
     await User.update(value, { where: { id: req.user.id } });
     res.status(200).json(value);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// userOrderHistorys
+
+exports.userOrderHistorys = async (req, res, next) => {
+  try {
+    const userOrder = await Order.findAll({
+      attributes: ["id", "quantity", "userId", "roomId"],
+      include: [
+        {
+          model: Room,
+          attributes: ["roomImage", "title", "price"],
+          include: [{ model: Category, attributes: ["typeProduct"] }]
+        },
+        {
+          model: User,
+          attributes: ["firstName", "lastName"]
+        },
+        { model: OrderStatus, attributes: ["status", "date"] },
+        {
+          model: Payment,
+          attributes: [
+            "creditCardNumber",
+            "expirationDate",
+            "cvv",
+            "zipCode",
+            "country"
+          ]
+        }
+      ]
+    });
+
+    const userOrderData = JSON.parse(JSON.stringify(userOrder));
+
+    // เพิ่มการแกะรูปภาพแรกจากอาร์เรย์ roomImage
+    userOrderData.forEach(order => {
+      order.Room.roomImage = JSON.parse(order.Room.roomImage)[0];
+    });
+
+    console.log("userOrderData:", userOrderData);
+    res.status(200).json(userOrderData);
   } catch (err) {
     next(err);
   }

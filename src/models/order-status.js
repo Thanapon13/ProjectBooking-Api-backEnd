@@ -1,22 +1,8 @@
-const {
-  ORDERSTATUS_WAITING,
-  ORDERSTATUS_CONFIRMED,
-  ORDERSTATUS_CANCEL
-} = require("../config/constant");
-
 module.exports = (sequelize, DataTypes) => {
   const OrderStatus = sequelize.define(
     "OrderStatus",
     {
-      status: {
-        type: DataTypes.ENUM(
-          ORDERSTATUS_WAITING,
-          ORDERSTATUS_CONFIRMED,
-          ORDERSTATUS_CANCEL
-        ),
-        allowNull: false,
-        defaultValue: ORDERSTATUS_WAITING
-      },
+      status: DataTypes.ENUM("WAITING", "CONFIRMED", "CANCEL"),
       date: DataTypes.DATE
     },
     { underscored: true }
@@ -26,14 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     OrderStatus.belongsTo(db.Order, {
       foreignKey: {
         name: "orderId",
-        allowNull: false
-      },
-      onDelete: "RESTRICT"
-    });
-
-    OrderStatus.belongsTo(db.User, {
-      foreignKey: {
-        name: "userId",
         allowNull: false
       },
       onDelete: "RESTRICT"
