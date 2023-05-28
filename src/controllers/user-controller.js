@@ -92,7 +92,7 @@ exports.userOrderHistorys = async (req, res, next) => {
       order.Room.roomImage = JSON.parse(order.Room.roomImage)[0];
     });
 
-    console.log("userOrderData:", userOrderData);
+    // console.log("userOrderData:", userOrderData);
     res.status(200).json(userOrderData);
   } catch (err) {
     next(err);

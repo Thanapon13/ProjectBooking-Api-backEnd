@@ -1,6 +1,6 @@
-const { Reservation } = require("../models");
+const { Reservation, Room } = require("../models");
 
-exports.addBooking = async (req, res, next) => {
+exports.createBooking = async (req, res, next) => {
   try {
     const { roomId } = req.params;
 
@@ -19,6 +19,31 @@ exports.addBooking = async (req, res, next) => {
     res.status(200).json({ message: "Successfully updated" });
   } catch (err) {
     next(err);
-    console.log("req.body:", req.body);
+    // console.log("req.body:", req.body);
+  }
+};
+
+exports.getBooking = async (req, res, next) => {
+  try {
+    const getBooking = await Reservation.findAll({
+      include: [
+        {
+          model: Room,
+          attributes: ["roomImage", "title", "price", "address"]
+        }
+      ]
+    });
+    // console.log("getBooking:", getBooking);
+    const getBookingData = JSON.parse(JSON.stringify(getBooking));
+
+    // เพิ่มการแกะรูปภาพแรกจากอาร์เรย์ roomImage
+    getBookingData.forEach(el => {
+      el.Room.roomImage = JSON.parse(el.Room.roomImage)[0];
+    });
+
+    console.log("getBookingData:", getBookingData);
+    res.status(200).json(getBookingData);
+  } catch (err) {
+    next(err);
   }
 };
