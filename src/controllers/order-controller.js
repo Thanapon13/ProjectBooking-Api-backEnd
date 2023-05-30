@@ -1,4 +1,4 @@
-const { Order, Cart, User, Room, Category } = require("../models");
+const { Order, Cart } = require("../models");
 
 exports.createOrder = async (req, res, next) => {
   try {
@@ -26,7 +26,7 @@ exports.createOrder = async (req, res, next) => {
     // console.log("createOrderData:", createOrderData);
 
     const order = await Order.create(createOrderData);
-    // console.log("order:", order);
+    console.log("order:", order);
 
     await Cart.destroy({
       where: {

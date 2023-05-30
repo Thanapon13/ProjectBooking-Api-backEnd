@@ -8,14 +8,20 @@ exports.createPayment = async (req, res, next) => {
       cvv: Number(req.body.cvv),
       zipCode: Number(req.body.zipCode),
       country: req.body.country,
-      orderId: Number(req.body.orderId)
+      orderId: req.body.orderId ? Number(req.body.orderId) : null,
+      reservationPaymentId: req.body.reservationPaymentId
+        ? Number(req.body.reservationPaymentId)
+        : null
     };
 
-    console.log("Value:", value);
+    console.log(
+      "Value----------------------------------------------------------------:",
+      value
+    );
 
     await Payment.create(value);
     await OrderStatus.create({
-      orderId: value.orderId,
+      orderId: value.orderId !== undefined ? value.orderId : null,
       status: "WAITING",
       date: new Date()
     });

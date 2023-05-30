@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     Order.hasMany(db.OrderStatus, {
       foreignKey: {
         name: "orderId",
-        allowNull: false
+        allowNull: true
       },
       onDelete: "RESTRICT"
     });
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     Order.hasOne(db.Payment, {
       foreignKey: {
         name: "orderId",
-        allowNull: false
+        allowNull: true
       },
       onDelete: "RESTRICT"
     });

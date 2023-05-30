@@ -94,6 +94,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT"
     });
+
+    User.hasMany(db.ReservationPayment, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
   };
 
   return User;

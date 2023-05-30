@@ -51,9 +51,13 @@ exports.getBooking = async (req, res, next) => {
 exports.updateBooking = async (req, res, next) => {
   try {
     const { startDate, endDate, bookingId } = req.body;
+    console.log("-------------------------");
     console.log("startDate:", startDate);
+    console.log("-------------------------");
     console.log("endDate:", endDate);
+    console.log("-------------------------");
     console.log("bookingId:", bookingId);
+    console.log("-------------------------");
 
     if (!bookingId) {
       // ถ้าไม่มี bookingId ใน req.body ให้ส่งข้อผิดพลาดกลับไป
@@ -68,7 +72,7 @@ exports.updateBooking = async (req, res, next) => {
     res.status(200).json({ message: "Booking updated successfully" });
   } catch (err) {
     console.log(err);
-    console.log("req.body", req.body);
+
     next(err);
   }
 };

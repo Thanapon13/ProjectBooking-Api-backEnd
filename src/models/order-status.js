@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     OrderStatus.belongsTo(db.Order, {
       foreignKey: {
         name: "orderId",
-        allowNull: false
+        allowNull: true
       },
       onDelete: "RESTRICT"
     });

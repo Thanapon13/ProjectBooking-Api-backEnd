@@ -41,6 +41,16 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true
         },
         onDelete: "RESTRICT"
+      },
+      orderId: {
+        type: DataTypes.INTEGER,
+        allowNull: true, // เปลี่ยนเป็น true เพื่ออนุญาตให้เป็นค่า null
+        onDelete: "RESTRICT"
+      },
+      reservationPaymentId: {
+        type: DataTypes.INTEGER,
+        allowNull: true, // เปลี่ยนเป็น true เพื่ออนุญาตให้เป็นค่า null
+        onDelete: "RESTRICT"
       }
     },
     { underscored: true }
@@ -50,6 +60,13 @@ module.exports = (sequelize, DataTypes) => {
     Payment.belongsTo(db.Order, {
       foreignKey: {
         name: "orderId"
+      },
+      onDelete: "RESTRICT"
+    });
+
+    Payment.belongsTo(db.ReservationPayment, {
+      foreignKey: {
+        name: "reservationPaymentId"
       },
       onDelete: "RESTRICT"
     });
