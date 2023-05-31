@@ -7,7 +7,8 @@ const {
   Room,
   Payment,
   OrderStatus,
-  Category
+  Category,
+  ReservationPayment
 } = require("../models");
 
 exports.updateProfileImage = async (req, res, next) => {
@@ -94,6 +95,51 @@ exports.userOrderHistorys = async (req, res, next) => {
 
     // console.log("userOrderData:", userOrderData);
     res.status(200).json(userOrderData);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getUserOrderHistoryRoomReservationPayment = async (req, res, next) => {
+  try {
+    const reservationPayment = await ReservationPayment.findAll({
+      include: [
+        {
+          model: Room,
+          attributes: ["roomImage", "title", "price"],
+          include: [{ model: Category, attributes: ["typeProduct"] }]
+        },
+        {
+          model: User,
+          attributes: ["firstName", "lastName"]
+        },
+        {
+          model: Payment,
+          attributes: [
+            "creditCardNumber",
+            "expirationDate",
+            "cvv",
+            "zipCode",
+            "country"
+          ]
+        }
+      ]
+    });
+
+    // console.log("reservationPayment-----", reservationPayment);
+    // console.log("---------------------------------------------------------");
+
+    const pureReservationPaymentData = JSON.parse(
+      JSON.stringify(reservationPayment)
+    );
+
+    // เพิ่มการแกะรูปภาพแรกจากอาร์เรย์ roomImage
+    pureReservationPaymentData.forEach(el => {
+      el.Room.roomImage = JSON.parse(el.Room.roomImage)[0];
+    });
+    console.log("pureReservationPaymentData:  ", pureReservationPaymentData);
+
+    res.status(201).json({ pureReservationPaymentData });
   } catch (err) {
     next(err);
   }

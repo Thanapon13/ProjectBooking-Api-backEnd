@@ -29,7 +29,7 @@ exports.getBooking = async (req, res, next) => {
       include: [
         {
           model: Room,
-          attributes: ["roomImage", "title", "price", "address"]
+          attributes: ["roomImage", "title", "price", "address", "id"]
         }
       ]
     });
@@ -73,6 +73,38 @@ exports.updateBooking = async (req, res, next) => {
   } catch (err) {
     console.log(err);
 
+    next(err);
+  }
+};
+
+// getReservationId
+
+exports.getbookingId = async (req, res, next) => {
+  try {
+    const getbookingId = await Reservation.findOne({
+      attributes: ["id"]
+    });
+    const getbookingIdData = JSON.parse(JSON.stringify(getbookingId));
+
+    res.status(200).json({ getbookingIdData });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteBooking = async (req, res, next) => {
+  try {
+    const remove = await Reservation.findOne({
+      where: {
+        roomId: req.params.roomId
+      }
+    });
+    if (!remove) {
+      createError("this post was not found", 400);
+    }
+    await remove.destroy();
+    res.status(200).json({ message: "Delete success" });
+  } catch (err) {
     next(err);
   }
 };

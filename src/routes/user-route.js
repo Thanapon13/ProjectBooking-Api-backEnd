@@ -14,5 +14,9 @@ router.patch(
 
 router.patch("/info", userController.updateUserInfo);
 router.get("/userOrder", userController.userOrderHistorys);
+router.get(
+  "/getUserOrderHistoryRoomReservationPayment",
+  userController.getUserOrderHistoryRoomReservationPayment
+);
 
 module.exports = router;

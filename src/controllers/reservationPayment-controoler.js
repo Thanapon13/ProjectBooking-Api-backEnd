@@ -1,4 +1,4 @@
-const { ReservationPayment, Reservation } = require("../models");
+const { ReservationPayment, Reservation, Room } = require("../models");
 
 exports.createReservationPayment = async (req, res, next) => {
   try {
@@ -39,20 +39,6 @@ exports.createReservationPayment = async (req, res, next) => {
     });
 
     res.status(200).json({ reservationPayment });
-  } catch (err) {
-    next(err);
-  }
-};
-
-// getReservation
-
-exports.getReservation = async (req, res, next) => {
-  try {
-    const getReservation = await Reservation.findOne({
-      attributes: ["id"]
-    });
-
-    res.status(200).json({ getReservation });
   } catch (err) {
     next(err);
   }
