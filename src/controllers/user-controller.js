@@ -65,12 +65,12 @@ exports.userOrderHistorys = async (req, res, next) => {
       include: [
         {
           model: Room,
-          attributes: ["roomImage", "title", "price"],
+          attributes: ["roomImage", "title", "price", "address"],
           include: [{ model: Category, attributes: ["typeProduct"] }]
         },
         {
           model: User,
-          attributes: ["firstName", "lastName"]
+          attributes: ["firstName", "lastName", "id"]
         },
         { model: OrderStatus, attributes: ["status", "date"] },
         {
@@ -106,13 +106,14 @@ exports.getUserOrderHistoryRoomReservationPayment = async (req, res, next) => {
       include: [
         {
           model: Room,
-          attributes: ["roomImage", "title", "price"],
+          attributes: ["roomImage", "title", "price", "address"],
           include: [{ model: Category, attributes: ["typeProduct"] }]
         },
         {
           model: User,
-          attributes: ["firstName", "lastName"]
+          attributes: ["firstName", "lastName", "id"]
         },
+        { model: OrderStatus, attributes: ["status", "date"] },
         {
           model: Payment,
           attributes: [
@@ -137,9 +138,28 @@ exports.getUserOrderHistoryRoomReservationPayment = async (req, res, next) => {
     pureReservationPaymentData.forEach(el => {
       el.Room.roomImage = JSON.parse(el.Room.roomImage)[0];
     });
-    console.log("pureReservationPaymentData:  ", pureReservationPaymentData);
+    // console.log("pureReservationPaymentData:  ", pureReservationPaymentData);
 
     res.status(201).json({ pureReservationPaymentData });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getPaymentUser = async (req, res, next) => {
+  try {
+    const paymentUser = await Payment.findAll({
+      include: [
+        { model: Order, include: [{ model: Room }] },
+        { model: ReservationPayment, include: [{ model: Room }] }
+      ]
+    });
+
+    // console.log("paymentUser:", paymentUser);
+    const purePaymentUserData = JSON.parse(JSON.stringify(paymentUser));
+    console.log("purePaymentUserData:", purePaymentUserData);
+
+    res.status(201).json({ purePaymentUserData });
   } catch (err) {
     next(err);
   }

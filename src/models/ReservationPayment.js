@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "RESTRICT"
     });
 
+    ReservationPayment.hasMany(db.OrderStatus, {
+      foreignKey: {
+        name: "reservationPaymentId",
+        allowNull: true
+      },
+      onDelete: "RESTRICT"
+    });
+
     ReservationPayment.belongsTo(db.User, {
       foreignKey: {
         name: "userId",

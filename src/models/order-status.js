@@ -16,6 +16,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT"
     });
+
+    OrderStatus.belongsTo(db.ReservationPayment, {
+      foreignKey: {
+        name: "reservationPaymentId",
+        allowNull: true
+      },
+      onDelete: "RESTRICT"
+    });
   };
   return OrderStatus;
 };

@@ -1,4 +1,4 @@
-const { Payment, OrderStatus } = require("../models");
+const { Payment, OrderStatus, ReservationPayment } = require("../models");
 
 exports.createPayment = async (req, res, next) => {
   try {
@@ -21,10 +21,17 @@ exports.createPayment = async (req, res, next) => {
 
     await Payment.create(value);
     await OrderStatus.create({
-      orderId: value.orderId !== undefined ? value.orderId : null,
+      orderId: value.orderId,
       status: "WAITING",
       date: new Date()
     });
+
+    await OrderStatus.create({
+      reservationPaymentId: value.reservationPaymentId,
+      status: "WAITING",
+      date: new Date()
+    });
+
     res.status(200).json({ message: "Successfully updated" });
   } catch (err) {
     next(err);
