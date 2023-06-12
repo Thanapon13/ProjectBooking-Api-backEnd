@@ -76,10 +76,13 @@ exports.updateConfirmed = async (req, res, next) => {
       }
     });
 
-    console.log("req.body.reservationPaymentId", req.body.reservationPaymentId);
+    console.log(
+      "req.body.updateStatusConfirmed",
+      req.body.reservationPaymentId
+    );
+    console.log("req.body.orderId", req.body.orderId);
 
     if (req.body.action === "confirmed") {
-      console.log("req.body--------------------,", req.body);
       await OrderStatus.update(
         { status: "CONFIRMED" },
         {
