@@ -18,6 +18,5 @@ router.get(
   "/getUserOrderHistoryRoomReservationPayment",
   userController.getUserOrderHistoryRoomReservationPayment
 );
-router.get("/getPaymentUser", userController.getPaymentUser);
 
 module.exports = router;

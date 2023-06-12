@@ -21,6 +21,7 @@ const orderRoute = require("./routes/order-route");
 const paymentRoute = require("./routes/payment-route");
 const bookingRoute = require("./routes/booking-route");
 const reservationPaymentRoute = require("./routes/reservationPayment-Route");
+const adminRoute = require("./routes/admin-route");
 const authenticateMiddleware = require("./middlewares/authenticate");
 
 const app = express();
@@ -46,6 +47,7 @@ app.use("/order", authenticateMiddleware, orderRoute);
 app.use("/payment", authenticateMiddleware, paymentRoute);
 app.use("/booking", authenticateMiddleware, bookingRoute);
 app.use("/reservationPayment", authenticateMiddleware, reservationPaymentRoute);
+app.use("/admin", authenticateMiddleware, adminRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
