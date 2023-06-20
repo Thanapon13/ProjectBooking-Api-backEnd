@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const {
   User,
   Order,
@@ -47,7 +48,7 @@ exports.getPaymentUser = async (req, res, next) => {
 
     // console.log("paymentUser:", paymentUser);
     const purePaymentUserData = JSON.parse(JSON.stringify(paymentUser));
-    console.log("purePaymentUserData:", purePaymentUserData);
+    // console.log("purePaymentUserData:", purePaymentUserData);
 
     purePaymentUserData.forEach(data => {
       if (data.Order) {
@@ -59,7 +60,7 @@ exports.getPaymentUser = async (req, res, next) => {
       }
     });
 
-    console.log("purePaymentUserData:", purePaymentUserData);
+    // console.log("purePaymentUserData:", purePaymentUserData);
 
     res.status(201).json({ purePaymentUserData });
   } catch (err) {
@@ -67,20 +68,15 @@ exports.getPaymentUser = async (req, res, next) => {
   }
 };
 
-exports.updateConfirmed = async (req, res, next) => {
+exports.updateOrderConfirmed = async (req, res, next) => {
   try {
     const updateStatusConfirmed = await OrderStatus.findOne({
       where: {
-        orderId: req.body.orderId || null,
-        reservationPaymentId: req.body.reservationPaymentId || null
+        orderId: req.body.orderId
       }
     });
 
-    console.log(
-      "req.body.updateStatusConfirmed",
-      req.body.reservationPaymentId
-    );
-    console.log("req.body.orderId", req.body.orderId);
+    // console.log("req.body.orderId", req.body.orderId);
 
     if (req.body.action === "confirmed") {
       await OrderStatus.update(
@@ -92,10 +88,181 @@ exports.updateConfirmed = async (req, res, next) => {
         }
       );
     }
-    console.log("updateStatusConfirmed:", updateStatusConfirmed);
+    // console.log("updateStatusConfirmed:", updateStatusConfirmed);
 
     res.status(200).json({ message: "CONFIRMED" });
   } catch (err) {
     next(err);
   }
 };
+
+exports.updateOrderCancel = async (req, res, next) => {
+  try {
+    const updateStatusCancel = await OrderStatus.findOne({
+      where: {
+        orderId: req.body.orderId
+      }
+    });
+
+    // console.log("req.body.orderId", req.body.orderId);
+
+    if (req.body.action === "cancel") {
+      await OrderStatus.update(
+        { status: "CANCEL" },
+        {
+          where: {
+            id: updateStatusCancel.id
+          }
+        }
+      );
+    }
+    // console.log("updateStatusCancel:", updateStatusCancel);
+
+    res.status(200).json({ message: "CANCEL" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteReservationOrder = async (req, res, next) => {
+  try {
+    const remove = await Order.findOne({
+      where: {
+        roomId: req.params.roomId
+      }
+    });
+
+    if (!remove) {
+      createError("this post was not found", 400);
+    }
+
+    await remove.destroy();
+    res.status(200).json({ message: "Delete success" });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.updateReservationPaymentConfirmed = async (req, res, next) => {
+  try {
+    const updateStatusConfirmed = await OrderStatus.findOne({
+      where: {
+        reservationPaymentId: req.body.reservationPaymentId
+      }
+    });
+
+    // console.log("req.body.reservationPaymentId", req.body.reservationPaymentId);
+
+    if (req.body.action === "confirmed") {
+      await OrderStatus.update(
+        { status: "CONFIRMED" },
+        {
+          where: {
+            id: updateStatusConfirmed.id
+          }
+        }
+      );
+    }
+    // console.log("updateStatusConfirmed:", updateStatusConfirmed);
+
+    res.status(200).json({ message: "CONFIRMED" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateReservationPaymentCancel = async (req, res, next) => {
+  try {
+    const updateReservationPaymentCancel = await OrderStatus.findOne({
+      where: {
+        reservationPaymentId: req.body.reservationPaymentId
+      }
+    });
+
+    // console.log("req.body.reservationPaymentId", req.body.reservationPaymentId);
+
+    if (req.body.action === "cancel") {
+      await OrderStatus.update(
+        { status: "CANCEL" },
+        {
+          where: {
+            id: updateReservationPaymentCancel.id
+          }
+        }
+      );
+    }
+    // console.log(
+    //   "updateReservationPaymentCancel:",
+    //   updateReservationPaymentCancel
+    // );
+
+    res.status(200).json({ message: "CANCEL" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteReservationPayment = async (req, res, next) => {
+  try {
+    const remove = await ReservationPayment.findOne({
+      where: {
+        roomId: req.params.roomId
+      }
+    });
+
+    if (!remove) {
+      createError("this post was not found", 400);
+    }
+
+    await remove.destroy();
+    res.status(200).json({ message: "Delete success" });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// exports.statusUpdataConfirmed = async (req, res, next) => {
+//   try {
+//     const { orderId, reservationPaymentId } = req.body;
+
+//     if (!orderId && !reservationPaymentId) {
+//       return res
+//         .status(400)
+//         .json({ message: "Missing orderId or reservationPaymentId" });
+//     }
+
+//     let updateStatusConfirmed;
+
+//     if (orderId) {
+//       updateStatusConfirmed = await OrderStatus.findOne({
+//         where: {
+//           orderId: orderId
+//         }
+//       });
+//       console.log("orderId:", orderId);
+//     } else if (reservationPaymentId) {
+//       updateStatusConfirmed = await OrderStatus.findOne({
+//         where: {
+//           reservationPaymentId: reservationPaymentId
+//         }
+//       });
+//       console.log("reservationPaymentId:", reservationPaymentId);
+//     }
+
+//     if (req.body.action === "confirmed") {
+//       await OrderStatus.update(
+//         { status: "CONFIRMED" },
+//         {
+//           where: {
+//             id: updateStatusConfirmed.id
+//           }
+//         }
+//       );
+//     }
+
+//     console.log("updateStatusConfirmed:", updateStatusConfirmed);
+//     res.status(200).json({ message: "CONFIRMED" });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
