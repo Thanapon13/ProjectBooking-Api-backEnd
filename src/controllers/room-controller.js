@@ -1,6 +1,5 @@
 const fs = require("fs");
 const cloudinary = require("../utils/cloudinary");
-const createError = require("../utils/create-error");
 const { Room, Category } = require("../models");
 
 exports.createRoom = async (req, res, next) => {
@@ -33,7 +32,7 @@ exports.createRoom = async (req, res, next) => {
       description: req.body.description,
       categoryId: Number(req.body.categoryId),
       provinceId: Number(req.body.provinceId),
-      userId: Number(req.body.userId)
+      userId: req.body.userId
     };
     console.log("Value:", value);
 

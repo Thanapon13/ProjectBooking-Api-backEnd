@@ -22,15 +22,7 @@ router.patch(
   adminController.updateReservationPaymentCancel
 );
 
-router.delete(
-  "/deleteReservationPayment/:roomId",
-  adminController.deleteReservationPayment
-);
-
-router.delete(
-  "/deleteReservationOrder/:roomId",
-  adminController.deleteReservationOrder
-);
+router.delete("/:orderId", adminController.deletePaymentOrder);
 
 // router.patch("/statusUpdataConfirmed", adminController.statusUpdataConfirmed);
 

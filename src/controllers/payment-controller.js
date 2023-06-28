@@ -20,17 +20,22 @@ exports.createPayment = async (req, res, next) => {
     );
 
     await Payment.create(value);
-    await OrderStatus.create({
-      orderId: value.orderId,
-      status: "WAITING",
-      date: new Date()
-    });
 
-    await OrderStatus.create({
-      reservationPaymentId: value.reservationPaymentId,
-      status: "WAITING",
-      date: new Date()
-    });
+    if (value.orderId) {
+      await OrderStatus.create({
+        orderId: value.orderId,
+        status: "WAITING",
+        date: new Date()
+      });
+    }
+
+    if (value.reservationPaymentId) { 
+      await OrderStatus.create({
+        reservationPaymentId: value.reservationPaymentId,
+        status: "WAITING",
+        date: new Date()
+      });
+    }
 
     res.status(200).json({ message: "Successfully updated" });
   } catch (err) {

@@ -124,19 +124,22 @@ exports.updateOrderCancel = async (req, res, next) => {
   }
 };
 
-exports.deleteReservationOrder = async (req, res, next) => {
+exports.deletePaymentOrder = async (req, res, next) => {
   try {
     const remove = await Order.findOne({
       where: {
-        roomId: req.params.roomId
+        id: req.params.orderId
       }
     });
+
+    console.log("remove", remove);
 
     if (!remove) {
       createError("this post was not found", 400);
     }
 
     await remove.destroy();
+
     res.status(200).json({ message: "Delete success" });
   } catch (err) {
     console.log(err);
@@ -199,25 +202,6 @@ exports.updateReservationPaymentCancel = async (req, res, next) => {
     res.status(200).json({ message: "CANCEL" });
   } catch (err) {
     next(err);
-  }
-};
-
-exports.deleteReservationPayment = async (req, res, next) => {
-  try {
-    const remove = await ReservationPayment.findOne({
-      where: {
-        roomId: req.params.roomId
-      }
-    });
-
-    if (!remove) {
-      createError("this post was not found", 400);
-    }
-
-    await remove.destroy();
-    res.status(200).json({ message: "Delete success" });
-  } catch (err) {
-    console.log(err);
   }
 };
 
