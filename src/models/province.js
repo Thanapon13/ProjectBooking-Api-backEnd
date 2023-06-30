@@ -16,6 +16,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT"
     });
+
+    Province.hasMany(db.CreateRoom, {
+      foreignKey: {
+        name: "provinceId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    });
   };
   return Province;
 };
