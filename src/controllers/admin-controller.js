@@ -6,7 +6,8 @@ const {
   Payment,
   OrderStatus,
   Category,
-  ReservationPayment
+  ReservationPayment,
+  CreateRoom
 } = require("../models");
 
 exports.getPaymentUser = async (req, res, next) => {
@@ -205,48 +206,40 @@ exports.updateReservationPaymentCancel = async (req, res, next) => {
   }
 };
 
-// exports.statusUpdataConfirmed = async (req, res, next) => {
-//   try {
-//     const { orderId, reservationPaymentId } = req.body;
+exports.confirmedCreateRoom = async (req, res, next) => {
+  try {
+    const createRoom = await CreateRoom.findOne({
+      where: {
+        id: req.body.id
+      }
+    });
+    console.log("createRoom:", createRoom);
 
-//     if (!orderId && !reservationPaymentId) {
-//       return res
-//         .status(400)
-//         .json({ message: "Missing orderId or reservationPaymentId" });
-//     }
+    const pureCreateRoomData = JSON.parse(JSON.stringify(createRoom));
+    console.log("pureCreateRoomData:", pureCreateRoomData);
 
-//     let updateStatusConfirmed;
+    const createRoomData = {
+      roomImage: pureCreateRoomData.roomImage,
+      title: pureCreateRoomData.title,
+      price: pureCreateRoomData.price,
+      address: pureCreateRoomData.address,
+      description: pureCreateRoomData.description,
+      categoryId: pureCreateRoomData.categoryId,
+      provinceId: pureCreateRoomData.provinceId,
+      userId: pureCreateRoomData.userId
+    };
 
-//     if (orderId) {
-//       updateStatusConfirmed = await OrderStatus.findOne({
-//         where: {
-//           orderId: orderId
-//         }
-//       });
-//       console.log("orderId:", orderId);
-//     } else if (reservationPaymentId) {
-//       updateStatusConfirmed = await OrderStatus.findOne({
-//         where: {
-//           reservationPaymentId: reservationPaymentId
-//         }
-//       });
-//       console.log("reservationPaymentId:", reservationPaymentId);
-//     }
+    const room = await Room.create(createRoomData);
+    console.log("room:", room);
 
-//     if (req.body.action === "confirmed") {
-//       await OrderStatus.update(
-//         { status: "CONFIRMED" },
-//         {
-//           where: {
-//             id: updateStatusConfirmed.id
-//           }
-//         }
-//       );
-//     }
+    await CreateRoom.destroy({
+      where: {
+        id: req.body.id
+      }
+    });
 
-//     console.log("updateStatusConfirmed:", updateStatusConfirmed);
-//     res.status(200).json({ message: "CONFIRMED" });
-//   } catch (err) {
-//     next(err);
-//   }
-// };
+    res.status(200).json({ room });
+  } catch (err) {
+    next(err);
+  }
+};

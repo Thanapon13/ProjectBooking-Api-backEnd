@@ -24,6 +24,6 @@ router.patch(
 
 router.delete("/:orderId", adminController.deletePaymentOrder);
 
-// router.patch("/statusUpdataConfirmed", adminController.statusUpdataConfirmed);
+router.post("/", adminController.confirmedCreateRoom);
 
 module.exports = router;
